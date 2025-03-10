@@ -64,19 +64,21 @@ func (cfg *apiConfig) handlerUploadThumbnail(w http.ResponseWriter, r *http.Requ
 		return
 	}
 
-	// encodedData := base64.StdEncoding.EncodeToString(data)
-	// thumbnail_url := fmt.Sprintf("data:%s;base64,%s", contentType, encodedData)
+	encodedData := base64.StdEncoding.EncodeToString(data)
+	thumbnail_url := fmt.Sprintf("data:%s;base64,%s", contentType, encodedData)
+	videoData.ThumbnailURL = &thumbnail_url
+
 	// fmt.Println(thumbnail_url)
 
-	videoThumb := thumbnail{
-		data:      data,
-		mediaType: contentType,
-	}
-
-	videoThumbnails[videoID] = videoThumb
-
-	thumbURL := fmt.Sprintf("http://localhost:%s/api/thumbnails/%s", cfg.port, videoID.String())
-	videoData.ThumbnailURL = &thumbURL
+	// videoThumb := thumbnail{
+	// 	data:      data,
+	// 	mediaType: contentType,
+	// }
+	//
+	// videoThumbnails[videoID] = videoThumb
+	//
+	// thumbURL := fmt.Sprintf("http://localhost:%s/api/thumbnails/%s", cfg.port, videoID.String())
+	// videoData.ThumbnailURL = &thumbURL
 
 	err = cfg.db.UpdateVideo(videoData)
 	if err != nil {
